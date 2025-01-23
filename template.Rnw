@@ -125,11 +125,90 @@ x &= x \tag{Dividing both sides by 9}
 Note, I did a page break here so that the next section
 started on a clean page.
 
-\section{Results}
-Tie together the Introduction -- where you introduce the problem at hand -- and the methods --  what you propose to do to answer the question. Present your data, the results of your analyses, and how each reported aspect contributes to answering the question. This section should include table(s), statistic(s), and graphical displays. Make sure to put the results in a sensible order and that each result contributes a logical and developed solution. It should not just be a list. Avoid being repetitive. 
+\pagebreak
 
-\subsection{Results Subsection}
-Subsections can be helpful for the Results section, too. This can be particularly helpful if you have different questions to answer. 
+\subsection{Runing R Code}
+\noindent Code chunks can be entered into Sweave; e.g., here are some comments.
+
+<<size='scriptsize'>>=
+# R code goes here
+# Output is automatically printed in the pdf
+@
+
+Below, you can see that we can do algebra with R.
+
+<<size='scriptsize'>>=
+8*(9-5) + 9 # 8(x-5) + x for x=9)
+@
+
+Below, we show we can produced the code without evalu- ating it.
+
+<<eval=FALSE, size='scriptsize'>>=
+8*(9-5) + 9 # 8(x-5) + x for x=9
+@
+
+Alternatively, we can produced the output without the
+code.
+
+<<echo=FALSE, size='scriptsize'>>=
+8*(9-5) + 9 # 8(x-5) + x for x=9
+@
+
+We can also call object values from R directly.
+
+<<size='scriptsize'>>=
+result <- 8*(9-5) + 9 # 8(x-5) + x for x=9
+result.with.error <- result + rnorm(1, mean = 0, sd = 0.1)
+result.with.error
+@
+
+The result is \Sexpr{result.with.error}. Note that I did not type the result, but I used the \verb|\Sexpr{}| command.
+
+\subsection{Plotting}
+\noindent We can also plot with \texttt{R}.
+
+<<plot1, size='scriptsize', eval=FALSE>>=
+# Plot a histogram of random exponential data
+hist(rexp(100))
+@
+
+\begin{figure}[H]
+  \begin{center}
+%This code is evaluated, but not printed
+%warning=FALSE and message=FALSE ensure no text is returned as a by product of
+%printing; this would cause an error in that plot+text is returned instead of
+%just the plot
+<<echo=FALSE, warning=FALSE, message=FALSE, fig.dim=c(5,3.5)>>=
+<<plot1>>
+@
+  \caption{A histogram of random normally distributed data, $n=100$.}
+  \label{plot1} %we can now reference plot1
+  \end{center}
+\end{figure}
+
+\subsection{Tables}
+
+Below, we load and take a peek at some data about the death rates per 1000 in Virginia in 1940 (Molyneaux et al., 1947).
+
+<<size = 'scriptsize'>>=
+data(VADeaths)
+head(VADeaths) # Take a peek of the data
+@
+
+If we want to print this nicely, we can do so using the xtable package (Dahl et al., 2019), which we can reference using the label (Table 1).
+
+<<size = 'scriptsize'>>=
+library(xtable) 
+sleep.table<-xtable(VADeaths ,
+                    label = "VADeaths.tab",
+                    caption = "Death Rates per 1000 in Virginia (1940).")
+@
+
+
+<<results="asis", echo=F>>=
+print(sleep.table,
+      table.placement = "H", include.rownames=FALSE, size = "small")
+@
 
 
 \section{Discussion}
